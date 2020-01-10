@@ -20,6 +20,6 @@ export class Course {
   @prop()
   cover: string
 
-  @arrayProp({ref: 'Episode'})
+  @arrayProp({itemsRef: 'Episode'})
   episodes: Ref<Episode>[]
 }
