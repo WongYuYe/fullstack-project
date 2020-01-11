@@ -1,14 +1,21 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    component: () => import(/* webpackChunkName: "about" */ '../views/Main.vue'),
+    children: [
+      {
+        name: 'home', path: '/', component: Home,
+      },
+      {
+        name: 'courses-list', path: '/courses/list', component: () => import(/* webpackChunkName: "about" */ '../views/courses/List.vue'),
+      },
+    ]
   },
   {
     path: '/about',

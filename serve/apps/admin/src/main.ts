@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   const options = new DocumentBuilder()
     .setTitle('全栈项目')
     .setDescription('全栈项目 admin-api')
