@@ -4,7 +4,9 @@
       :option="option"
       :data="data"
       :page="page"
-      @on-load="onLoad"
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      @on-load="loadDate"
       @row-save="create"
       @row-update="update"
       @row-del="remove"
@@ -30,40 +32,75 @@ export default class coursesList extends Vue {
       }
     ]
   };
-  page = 1;
-  async fatch() {
-    const res = await this.$http.get("courses");
-    this.data = res.data.data;
+  page: any = {
+    pageSizes: [5, 10, 20],
+    pageSize: 5,
+    currentPage: 1,
+    total: 0
+  };
+  query: any = {
+
+  }
+  async fetch() {
+    const {
+      data: { total, data, lastPage, page }
+    } = await this.$http.get("courses", {
+      params: {
+        query: this.query
+      }
+    });
+    this.data = data;
+    this.page[`total`] = total;
+    this.page[`currentPage`] = page;
   }
 
   async create(row, done) {
     const params = Object.assign({}, row);
     global.console.log(params);
     const res = await this.$http.post("courses", row);
-    this.fatch()
-    done()
-    // this.data = res.data.data;
+    this.fetch();
+    done();
   }
 
-  async update(row,index,done,loading) {
+  async update(row, index, done, loading) {
     const params = Object.assign({}, row);
-    delete params.$index
-    global.console.log(row)
+    delete params.$index;
+    global.console.log(row);
     const res = await this.$http.put(`courses/${row._id}`, params);
-    this.fatch()
+    this.fetch();
 
-    done()
+    done();
     // this.data = res.data.data;
   }
 
-  async remove(row,index) {
+  async remove(row, index) {
     const res = await this.$http.delete(`courses/${row._id}`);
-    this.fatch()
+    this.fetch();
     // this.data = res.data.data;
+  }
+
+  sizeChange(val) {
+    this.page.currentPage = 1;
+    this.page.pageSize = val;
+    this.$message.success("行数" + val);
+    this.fetch();
+  }
+  currentChange(val) {
+    this.page.currentPage = val;
+    this.$message.success("页码" + val);
+  }
+
+  loadDate({ pageSize, currentPage }) {
+    this.page.currentPage = currentPage;
+    this.page.pageSize = pageSize;
+    this.query = {
+      limit: pageSize,
+      page: currentPage
+    }
   }
 
   created() {
-    this.fatch();
+    this.fetch();
   }
 }
 </script>
