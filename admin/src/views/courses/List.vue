@@ -28,7 +28,10 @@ export default class coursesList extends Vue {
       },
       {
         label: "课程图片",
-        prop: "cover"
+        prop: "cover",
+        type: "upload",
+        listType: "picture-img",
+        action: 'upload' 
       }
     ]
   };
@@ -38,9 +41,7 @@ export default class coursesList extends Vue {
     currentPage: 1,
     total: 0
   };
-  query: any = {
-
-  }
+  query: any = {};
   async fetch() {
     const {
       data: { total, data, lastPage, page }
@@ -88,6 +89,7 @@ export default class coursesList extends Vue {
   currentChange(val) {
     this.page.currentPage = val;
     this.$message.success("页码" + val);
+    this.fetch();
   }
 
   loadDate({ pageSize, currentPage }) {
@@ -96,7 +98,7 @@ export default class coursesList extends Vue {
     this.query = {
       limit: pageSize,
       page: currentPage
-    }
+    };
   }
 
   created() {
