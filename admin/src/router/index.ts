@@ -13,7 +13,10 @@ const routes: RouteConfig[] = [
         name: 'home', path: '/', component: Home,
       },
       {
-        name: 'courses-list', path: '/courses/list', component: () => import(/* webpackChunkName: "about" */ '../views/courses/List.vue'),
+        name: 'courses-list', path: '/courses/list', component: () => import('../views/courses/List.vue'),
+      },
+      {
+        name: 'episodes-list', path: '/episodes/list', component: () => import('../views/episodes/List.vue'),
       },
     ]
   },

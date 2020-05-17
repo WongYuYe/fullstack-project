@@ -1,5 +1,6 @@
-import { prop, modelOptions } from '@typegoose/typegoose'
+import { prop, modelOptions, Ref } from '@typegoose/typegoose'
 import { ApiProperty } from '@nestjs/swagger';
+import { Course } from './course.model';
 
 @modelOptions({
   schemaOptions: {
@@ -14,5 +15,9 @@ export class Episode {
   @ApiProperty({description: '文件', example: '这是xxxxxx'})
   @prop()
   file: string
+
+  @ApiProperty({description: '所属课程'})
+  @prop({ref: 'course'})
+  course: Ref<Course>
 
 }

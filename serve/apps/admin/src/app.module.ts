@@ -4,14 +4,14 @@ import { AppService } from './app.service';
 import { DbModule } from '@libs/db';
 import { UsersModule } from './users/users.module';
 import { CoursesModule } from './courses/courses.module';
-import { EpisodeModule } from './episode/episode.module';
+import { EpisodesModule } from './episodes/episodes.module';
 
 @Module({
   imports: [
     DbModule,
     UsersModule,
     CoursesModule,
-    EpisodeModule
+    EpisodesModule
   ],
   controllers: [AppController],
   providers: [AppService],

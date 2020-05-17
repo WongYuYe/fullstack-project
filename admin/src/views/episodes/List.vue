@@ -18,20 +18,27 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class coursesList extends Vue {
+export default class episodesList extends Vue {
   data = [];
+  courses: [];
   option = {
     column: [
       {
-        label: "课程名称",
+        label: "课时名称",
         prop: "name"
       },
       {
-        label: "课程图片",
-        prop: "cover",
+        label: "文件",
+        prop: "file",
         // type: "upload",
         // listType: "picture-img",
         // action: 'upload' 
+      },
+      {
+        label: '所属课程',
+        prop: 'course',
+        type: 'select',
+        dicData: ''
       }
     ]
   };
@@ -45,7 +52,7 @@ export default class coursesList extends Vue {
   async fetch() {
     const {
       data: { total, data, lastPage, page }
-    } = await this.$http.get("courses", {
+    } = await this.$http.get("episodes", {
       params: {
         query: this.query
       }
@@ -53,12 +60,19 @@ export default class coursesList extends Vue {
     this.data = data;
     this.page[`total`] = total;
     this.page[`currentPage`] = page;
+
+    const re = await this.$http.get("courses");
+    const courses = re.data.data.map(v => ({
+      label: v.name,
+      value: v._id
+    }))
+    this.option.column[2].dicData = courses;
   }
 
   async create(row, done) {
     const params = Object.assign({}, row);
     global.console.log(params);
-    const res = await this.$http.post("courses", row);
+    const res = await this.$http.post("episodes", row);
     this.fetch();
     done();
   }
@@ -67,7 +81,7 @@ export default class coursesList extends Vue {
     const params = Object.assign({}, row);
     delete params.$index;
     global.console.log(row);
-    const res = await this.$http.put(`courses/${row._id}`, params);
+    const res = await this.$http.put(`episodes/${row._id}`, params);
     this.fetch();
 
     done();
@@ -75,7 +89,7 @@ export default class coursesList extends Vue {
   }
 
   async remove(row, index) {
-    const res = await this.$http.delete(`courses/${row._id}`);
+    const res = await this.$http.delete(`episodes/${row._id}`);
     this.fetch();
     // this.data = res.data.data;
   }
