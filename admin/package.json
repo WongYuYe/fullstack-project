@@ -11,7 +11,7 @@
     "@smallwei/avue": "^2.3.7",
     "@types/axios": "^0.14.0",
     "aliyun": "^1.0.0",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "core-js": "^3.4.4",
     "element-ui": "^2.4.5",
     "vue": "^2.6.10",
